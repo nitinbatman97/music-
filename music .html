@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Audio Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        h2 {
+            color: #1DB954;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+        .song {
+            background: #282828;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px auto;
+            width: 90%;
+            max-width: 400px;
+            cursor: pointer;
+        }
+        iframe {
+            width: 100%;
+            height: 100px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>🎵 Search & Play Music 🎵</h2>
+
+    <input type="text" id="searchQuery" placeholder="Enter song name">
+    <button onclick="searchSong()">Search</button>
+
+    <div id="results"></div>
+
+    <iframe id="player" src="" allow="autoplay"></iframe>
+
+    <script>
+        const API_KEY = "YOUR_YOUTUBE_API_KEY"; // 👈 Yahan apni API key paste karein
+
+        function searchSong() {
+            let query = document.getElementById("searchQuery").value;
+            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&type=video&key=${API_KEY}`)
+                .then(response => response.json())
+                .then(data => {
+                    let results = document.getElementById("results");
+                    results.innerHTML = "";
+                    data.items.forEach(video => {
+                        let videoId = video.id.videoId;
+                        let title = video.snippet.title;
+                        results.innerHTML += `<div class='song' onclick="playAudio('${videoId}')"><h3>${title}</h3></div>`;
+                    });
+                });
+        }
+
+        function playAudio(videoId) {
+            document.getElementById("player").src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&showinfo=0&modestbranding=1&playsinline=1`;
+        }
+    </script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Music Player</title>
+    <script>
+        function loadVideo(videoId) {
+            document.getElementById("player").src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        h2 {
+            color: #1DB954;
+        }
+        .song {
+            background: #282828;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px auto;
+            width: 90%;
+            max-width: 400px;
+            cursor: pointer;
+        }
+        iframe {
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>🎵 YouTube Music Player 🎵</h2>
+
+    <iframe id="player" src="https://www.youtube.com/embed/YOUTUBE_VIDEO_ID_1" allowfullscreen></iframe>
+
+    <div class="song" onclick="loadVideo('YOUTUBE_VIDEO_ID_1')">
+        <h3>Song 1: Example Track</h3>
+    </div>
+
+    <div class="song" onclick="loadVideo('YOUTUBE_VIDEO_ID_2')">
+        <h3>Song 2: Another Track</h3>
+    </div>
+
+</body>
+</html>
